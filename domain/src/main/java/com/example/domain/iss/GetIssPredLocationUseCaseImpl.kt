@@ -1,9 +1,12 @@
 package com.example.domain.iss
 
-class GetIssPredLocationUseCaseImpl: GetIssPredLocationUseCase {
+import com.example.data.GetIssPredLocationNetworkRepository
+import javax.inject.Inject
 
-    override fun invoke(request: String): String {
-        return "TEST USE CASE"
+class GetIssPredLocationUseCaseImpl @Inject constructor(val getIssPredLocationNetworkRepository: GetIssPredLocationNetworkRepository): GetIssPredLocationUseCase {
+
+    override suspend fun invoke(request: String): String {
+        return getIssPredLocationNetworkRepository.test()
     }
 
 }

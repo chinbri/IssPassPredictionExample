@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.iss.GetIssPredLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +17,11 @@ class MainViewModel @Inject constructor(val getIssPredLocationUseCase: GetIssPre
         get() = _testMessage
 
     init {
-        _testMessage.value = getIssPredLocationUseCase("aa")
+
+        runBlocking {
+            val result = getIssPredLocationUseCase("aa")
+            _testMessage.value = result
+        }
+
     }
 }

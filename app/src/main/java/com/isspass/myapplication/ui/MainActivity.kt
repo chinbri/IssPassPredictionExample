@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.isspass.myapplication.databinding.ActivityMainBinding
 import com.isspass.myapplication.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
