@@ -1,5 +1,6 @@
 package com.isspass.myapplication.viewmodel
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,19 +18,22 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(val getIssPredLocationUseCase: GetIssPredLocationUseCase): ViewModel() {
 
-    private var _testMessage = MutableLiveData<String>()
+    private var _issPredictedData = MutableLiveData<IssPredictedDataEntity>()
+    val issPredictedData: LiveData<IssPredictedDataEntity>
+        get() = _issPredictedData
 
+    private var _testMessage = MutableLiveData<String>()
     val testMessage: LiveData<String>
         get() = _testMessage
 
-    init {
+    fun onLocationObtained(location: Location){
 
         runBlocking {
             val result = getIssPredLocationUseCase(
                 GetIssPredLocationParam(
-                    40.027435.toLong(),
-                    -105.251945.toLong(),
-                    1650.0.toLong()
+                    location.latitude.toLong(),
+                    location.longitude.toLong(),
+                    location.altitude.toLong()
                 )
             )
 
@@ -38,11 +42,12 @@ class MainViewModel @Inject constructor(val getIssPredLocationUseCase: GetIssPre
                     _testMessage.value = result.message
                 }
                 is UseCaseResponse.Response<IssPredictedDataEntity> -> {
-                    _testMessage.value = result.value.locations.size.toString()
+                    _issPredictedData.value = result.value
                 }
             }
 
         }
 
     }
+
 }

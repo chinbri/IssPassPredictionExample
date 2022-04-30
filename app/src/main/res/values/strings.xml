@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Próximos sobrevuelos</string>
+    <string name="permissions_not_granted">No se han proporcionados permisos de localización a la app</string>
+    <string name="duration_with_placeholders">Durante %d minutos y %d segundos</string>
 </resources>
