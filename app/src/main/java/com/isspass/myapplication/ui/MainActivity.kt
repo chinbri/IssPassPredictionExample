@@ -3,9 +3,12 @@ package com.isspass.myapplication.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,6 +21,8 @@ import com.isspass.myapplication.databinding.ActivityMainBinding
 import com.isspass.myapplication.ui.adapter.IssLocationsAdapter
 import com.isspass.myapplication.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,12 +44,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         setupView()
+        setupViewModel()
 
-        viewModel.issPredictedData.observe(this){ issPredictedData ->
+    }
+
+    private fun setupViewModel() {
+
+        viewModel.issPredictedData.observe(this) { issPredictedData ->
             locationsAdapter.updateData(issPredictedData.locations)
         }
-        viewModel.testMessage.observe(this){ value ->
 
+        viewModel.uiStatus.observe(this) { uiStatus ->
+            when (uiStatus) {
+
+                is UiStatus.Loading -> viewBinding.cpiLoading.visibility = View.VISIBLE
+
+                is UiStatus.Error -> {
+                    viewBinding.cpiLoading.visibility = View.GONE
+                    Toast.makeText(this, uiStatus.message, Toast.LENGTH_LONG).show()
+                }
+
+                is UiStatus.Success -> viewBinding.cpiLoading.visibility = View.GONE
+
+            }
         }
 
     }
@@ -74,11 +96,30 @@ class MainActivity : AppCompatActivity() {
                 super.onLocationResult(locationResult)
                 viewModel.onLocationObtained(locationResult.lastLocation)
 
+                updateAddressText(locationResult)
+
                 mFusedLocationProviderClient?.removeLocationUpdates(this)
             }
         }
 
         createLocationRequest()
+    }
+
+    private fun updateAddressText(locationResult: LocationResult) {
+        val addresses: List<Address>
+        val geocoder = Geocoder(this, Locale.getDefault())
+
+        addresses = geocoder.getFromLocation(
+            locationResult.lastLocation.latitude,
+            locationResult.lastLocation.longitude,
+            1
+        )
+
+        val address: String =
+            addresses[0].getAddressLine(0)
+
+        viewBinding.tvCurrentLocation.text = getString(R.string.current_location, address)
+
     }
 
     private fun createLocationRequest() {

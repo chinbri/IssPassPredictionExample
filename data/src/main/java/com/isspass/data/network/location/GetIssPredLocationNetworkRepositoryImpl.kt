@@ -1,11 +1,12 @@
-package com.isspass.data
+package com.isspass.data.network.location
 
 import com.isspass.data.model.ApiResponseModel
 import com.isspass.data.model.IssLocationResponseModel
 import com.isspass.data.network.ApiService
 import javax.inject.Inject
 
-class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(val apiService: ApiService): GetIssPredLocationNetworkRepository {
+class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(val apiService: ApiService):
+    GetIssPredLocationNetworkRepository {
 
     override suspend fun getIssLocationForCoordinates(
         latitude: Long,

@@ -1,6 +1,7 @@
 package com.isspass.myapplication.di
 
 import com.isspass.data.network.ApiService
+import com.isspass.data.network.NumbersApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 
@@ -25,6 +27,17 @@ class NetworkModule {
             .client(okHttpClient)
             .build()
             .create(ApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNumbersApiService(okHttpClient: OkHttpClient): NumbersApiService {
+        return Retrofit.Builder()
+            .baseUrl("http://numbersapi.com/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(NumbersApiService::class.java)
     }
 
     @Singleton

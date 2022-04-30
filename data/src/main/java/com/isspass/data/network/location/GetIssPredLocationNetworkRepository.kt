@@ -1,4 +1,4 @@
-package com.isspass.data
+package com.isspass.data.network.location
 
 import com.isspass.data.model.ApiResponseModel
 import com.isspass.data.model.IssLocationResponseModel
