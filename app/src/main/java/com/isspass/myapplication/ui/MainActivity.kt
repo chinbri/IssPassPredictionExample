@@ -3,6 +3,7 @@ package com.isspass.myapplication.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.isspass.myapplication.databinding.ActivityMainBinding
 import com.isspass.myapplication.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,9 +21,19 @@ class MainActivity : AppCompatActivity() {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        setupView()
+
         viewModel.testMessage.observe(this){ value ->
-            viewBinding.message.text = value
+
         }
+
+    }
+
+    private fun setupView() {
+
+        viewBinding.rvLocations.addItemDecoration(
+            DividerItemDecoration(this, viewBinding.rvLocations.layoutDirection)
+        )
 
     }
 
