@@ -5,8 +5,10 @@ import com.isspass.data.model.IssLocationResponseModel
 import com.isspass.data.network.ApiService
 import javax.inject.Inject
 
-class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(val apiService: ApiService):
+class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(private val apiService: ApiService):
     GetIssPredLocationNetworkRepository {
+
+    val registerCount = 10
 
     override suspend fun getIssLocationForCoordinates(
         latitude: Long,
@@ -16,7 +18,7 @@ class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(val apiService
 
         val response: IssLocationResponseModel
         try {
-            response = apiService.getIssPositionsFromCoordinates(latitude, longitude, altitude)
+            response = apiService.getIssPositionsFromCoordinates(latitude, longitude, altitude, registerCount)
         } catch (t: Throwable) {
             return ApiResponseModel.ExceptionErrorResponse(t.message, t)
         }

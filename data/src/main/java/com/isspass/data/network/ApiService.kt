@@ -13,6 +13,7 @@ interface ApiService {
         @Query("lat") latitude: Long,
         @Query("lon") longitude: Long,
         @Query("alt") altitude: Long,
+        @Query("n") count: Int
     ): IssLocationResponseModel
 
 }

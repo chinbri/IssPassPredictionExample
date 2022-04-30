@@ -5,8 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.isspass.domain.model.iss.IssLocationItemEntity
+import com.isspass.domain.model.iss.durationMinutes
+import com.isspass.domain.model.iss.durationSecondsWithoutMinutes
 import com.isspass.myapplication.R
 import com.isspass.myapplication.databinding.ViewItemLocationBinding
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -44,21 +47,24 @@ class IssLocationsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
         listener: (item: IssLocationItemEntity) -> Unit
     ) {
 
-        viewBinding.tvDate.text = Date(issLocationItemEntity.riseTime).toString()
-        viewBinding.tvDuration.text = buildDurationString(issLocationItemEntity.duration)
+        viewBinding.tvDate.text = formatDate(issLocationItemEntity)
+        viewBinding.tvDuration.text =
+            itemView.resources.getString(
+                R.string.duration_with_placeholders,
+                issLocationItemEntity.durationMinutes,
+                issLocationItemEntity.durationSecondsWithoutMinutes
+            )
         viewBinding.root.setOnClickListener {
             listener.invoke(issLocationItemEntity)
         }
 
     }
 
-    private fun buildDurationString(duration: Long): String {
-
-        val minutes = duration / 60
-        val seconds = duration % 60
-
-        return itemView.resources.getString(R.string.duration_with_placeholders, minutes, seconds)
-
+    private fun formatDate(issLocationItemEntity: IssLocationItemEntity): String {
+        val simpleDateFormat = SimpleDateFormat("EEEE dd MMMM hh:mm", Locale.getDefault())
+        return simpleDateFormat.format(Date(issLocationItemEntity.riseTime * 1000))
     }
+
+
 
 }

@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.isspass.domain.model.iss.IssLocationItemEntity
+import com.isspass.domain.model.iss.durationMinutes
+import com.isspass.domain.model.iss.durationSecondsWithoutMinutes
+import com.isspass.myapplication.R
 import com.isspass.myapplication.databinding.FragmentDetailBinding
+import java.util.*
 
 class LocationDetailFragment: Fragment() {
 
@@ -31,6 +35,19 @@ class LocationDetailFragment: Fragment() {
     private fun setupView() {
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        viewBinding.tvRemainingTime.text = buildRemainingSecondsString(locationItemEntity.riseTime)
+        viewBinding.tvDuration.text = resources.getString(
+            R.string.detail_duration_label,
+            locationItemEntity.durationMinutes,
+            locationItemEntity.durationSecondsWithoutMinutes
+        )
+        viewBinding.tvFact.text = resources.getString(R.string.detail_fact_text, locationItemEntity.duration, locationItemEntity.fact)
+    }
+
+    private fun buildRemainingSecondsString(riseTime: Long): String {
+        val diffInSeconds: Long = riseTime - Date().time / 1000
+        return diffInSeconds.toString()
     }
 
     companion object{

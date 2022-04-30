@@ -2,6 +2,10 @@
     <string name="app_name">Próximos sobrevuelos</string>
     <string name="permissions_not_granted">No se han proporcionados permisos de localización a la app</string>
     <string name="duration_with_placeholders">Durante %d minutos y %d segundos</string>
-    <string name="waiting_for_location">Obteniendo localización...</string>
+    <string name="waiting_for_location">Obteniendo localización…</string>
     <string name="current_location">Estás en:\n%s</string>
+    <string name="remaining_time_label">Hasta el sobrevuelo quedan</string>
+    <string name="seconds">segundos</string>
+    <string name="detail_duration_label">El sobrevuelo durará %d minutos y %d segundos</string>
+    <string name="detail_fact_text">%d son los segundos que durará este sobrevuelo y, además, %s</string>
 </resources>
