@@ -4,15 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.isspass.domain.model.iss.IssLocationItemEntity
 import com.isspass.myapplication.R
 import com.isspass.myapplication.databinding.ViewItemLocationBinding
 import java.util.*
-import kotlin.math.min
 
 
-class IssLocationsAdapter: RecyclerView.Adapter<IssLocationsViewHolder>() {
+class IssLocationsAdapter(private val listener: (item: IssLocationItemEntity) -> Unit): RecyclerView.Adapter<IssLocationsViewHolder>() {
 
     val issLocationItemEntityList: MutableList<IssLocationItemEntity> = mutableListOf()
 
@@ -24,7 +22,7 @@ class IssLocationsAdapter: RecyclerView.Adapter<IssLocationsViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: IssLocationsViewHolder, position: Int) {
-        holder.bind(issLocationItemEntityList[position])
+        holder.bind(issLocationItemEntityList[position], listener)
     }
 
     override fun getItemCount(): Int = issLocationItemEntityList.size
@@ -41,10 +39,16 @@ class IssLocationsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
 
     var viewBinding: ViewItemLocationBinding = ViewItemLocationBinding.bind(itemView)
 
-    fun bind(issLocationItemEntity: IssLocationItemEntity) {
+    fun bind(
+        issLocationItemEntity: IssLocationItemEntity,
+        listener: (item: IssLocationItemEntity) -> Unit
+    ) {
 
         viewBinding.tvDate.text = Date(issLocationItemEntity.riseTime).toString()
         viewBinding.tvDuration.text = buildDurationString(issLocationItemEntity.duration)
+        viewBinding.root.setOnClickListener {
+            listener.invoke(issLocationItemEntity)
+        }
 
     }
 

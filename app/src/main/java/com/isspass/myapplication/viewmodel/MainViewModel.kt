@@ -4,12 +4,14 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.isspass.domain.location.GetIssPredLocationParam
 import com.isspass.domain.location.GetIssPredLocationUseCase
 import com.isspass.domain.model.UseCaseResponse
 import com.isspass.domain.model.iss.IssPredictedDataEntity
 import com.isspass.myapplication.ui.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -26,9 +28,12 @@ class MainViewModel @Inject constructor(val getIssPredLocationUseCase: GetIssPre
 
     fun onLocationObtained(location: Location){
 
+        _issPredictedData.value = IssPredictedDataEntity(emptyList())
+
         _uiStatus.value = UiStatus.Loading
 
-        runBlocking {
+        viewModelScope.launch {
+
             val result = getIssPredLocationUseCase(
                 GetIssPredLocationParam(
                     location.latitude.toLong(),
@@ -46,7 +51,6 @@ class MainViewModel @Inject constructor(val getIssPredLocationUseCase: GetIssPre
                     _issPredictedData.value = result.value
                 }
             }
-
         }
 
     }
