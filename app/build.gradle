@@ -43,6 +43,7 @@ def arch_version = "2.1.0"
 dependencies {
 
     implementation project(path: ':domain')
+    implementation project(path: ':data')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -55,8 +56,11 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.4.0'
 
     implementation "com.google.dagger:hilt-android:2.40"
-    implementation project(path: ':data')
+
     kapt "com.google.dagger:hilt-android-compiler:2.40"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //TEST
     testImplementation 'junit:junit:4.13.2'
