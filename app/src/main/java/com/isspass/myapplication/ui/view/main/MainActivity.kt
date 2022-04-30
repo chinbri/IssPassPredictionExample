@@ -2,9 +2,11 @@ package com.isspass.myapplication.ui.view.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -13,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.location.LocationManagerCompat
 import androidx.fragment.app.viewModels
 import com.google.android.gms.location.*
 import com.isspass.myapplication.R
@@ -58,21 +61,32 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCurrentLocation() {
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        if (isLocationEnabled()) {
 
-        locationCallback = object : LocationCallback() {
+            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-            override fun onLocationResult(locationResult: LocationResult) {
-                super.onLocationResult(locationResult)
-                viewModel.onLocationObtained(locationResult.lastLocation)
+            locationCallback = object : LocationCallback() {
 
-                updateAddressText(locationResult)
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
+                    viewModel.onLocationObtained(locationResult.lastLocation)
 
-                mFusedLocationProviderClient?.removeLocationUpdates(this)
+                    updateAddressText(locationResult)
+
+                    mFusedLocationProviderClient?.removeLocationUpdates(this)
+                }
             }
-        }
 
-        createLocationRequest()
+            createLocationRequest()
+
+        }else{
+            Toast.makeText(this, resources.getString(R.string.location_not_enabled), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return LocationManagerCompat.isLocationEnabled(locationManager)
     }
 
     private fun updateAddressText(locationResult: LocationResult) {

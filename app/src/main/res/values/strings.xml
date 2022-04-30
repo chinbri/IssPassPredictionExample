@@ -8,4 +8,5 @@
     <string name="seconds">segundos</string>
     <string name="detail_duration_label">El sobrevuelo durará %d minutos y %d segundos</string>
     <string name="detail_fact_text">%d son los segundos que durará este sobrevuelo y, además, %s</string>
+    <string name="location_not_enabled">La localización no está activada en el dispositivo</string>
 </resources>
