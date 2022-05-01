@@ -1,34 +1,22 @@
 package com.isspass.myapplication.ui.view.main
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.google.android.gms.location.*
 import com.isspass.domain.model.iss.IssLocationItemEntity
 import com.isspass.myapplication.R
 import com.isspass.myapplication.databinding.FragmentMainBinding
 import com.isspass.myapplication.ui.UiStatus
 import com.isspass.myapplication.ui.adapter.IssLocationsAdapter
 import com.isspass.myapplication.ui.view.detail.LocationDetailFragment
-import com.isspass.myapplication.viewmodel.MainViewModel
+import com.isspass.myapplication.viewmodel.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class MainFragment: Fragment() {

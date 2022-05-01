@@ -3,7 +3,7 @@ package com.isspass.domain.model.iss
 data class IssLocationItemEntity(
     val duration: Long,
     val riseTime: Long,
-    val fact: String
+    var fact: String? = null
 )
 val IssLocationItemEntity.durationMinutes: Long
     get() = duration / 60

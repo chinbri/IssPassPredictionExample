@@ -16,12 +16,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat
-import androidx.fragment.app.viewModels
 import com.google.android.gms.location.*
 import com.isspass.myapplication.R
 import com.isspass.myapplication.databinding.ActivityMainBinding
-import com.isspass.myapplication.ui.adapter.IssLocationsAdapter
-import com.isspass.myapplication.viewmodel.MainViewModel
+import com.isspass.myapplication.viewmodel.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 

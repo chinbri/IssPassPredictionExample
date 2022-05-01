@@ -4,16 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.isspass.domain.model.iss.IssLocationItemEntity
 import com.isspass.domain.model.iss.durationMinutes
 import com.isspass.domain.model.iss.durationSecondsWithoutMinutes
 import com.isspass.myapplication.R
 import com.isspass.myapplication.databinding.FragmentDetailBinding
+import com.isspass.myapplication.ui.UiStatus
+import com.isspass.myapplication.viewmodel.detail.DetailViewModel
+import com.isspass.myapplication.viewmodel.main.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class LocationDetailFragment: Fragment() {
+
+    private val viewModel by viewModels<DetailViewModel>()
 
     private lateinit var viewBinding: FragmentDetailBinding
     private lateinit var locationItemEntity: IssLocationItemEntity
@@ -30,6 +40,8 @@ class LocationDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
+        setupViewModel()
+        viewModel.initialize(locationItemEntity)
     }
 
     private fun setupView() {
@@ -42,7 +54,31 @@ class LocationDetailFragment: Fragment() {
             locationItemEntity.durationMinutes,
             locationItemEntity.durationSecondsWithoutMinutes
         )
-        viewBinding.tvFact.text = resources.getString(R.string.detail_fact_text, locationItemEntity.duration, locationItemEntity.fact)
+
+    }
+
+    private fun setupViewModel() {
+
+        viewModel.factForNumber.observe(requireActivity()){ factForNumber ->
+            viewBinding.tvFact.text = resources.getString(R.string.detail_fact_text, locationItemEntity.duration, factForNumber)
+        }
+
+        viewModel.uiStatus.observe(requireActivity()) { uiStatus ->
+            when (uiStatus) {
+
+                is UiStatus.Loading -> {
+                    viewBinding.tvFact.text = resources.getString(R.string.loading)
+                }
+
+                is UiStatus.Error -> {
+                    viewBinding.tvFact.text = resources.getString(R.string.error_obtaining_number_fact, uiStatus.message)
+                }
+
+                is UiStatus.Success -> {}
+
+            }
+        }
+
     }
 
     private fun buildRemainingSecondsString(riseTime: Long): String {

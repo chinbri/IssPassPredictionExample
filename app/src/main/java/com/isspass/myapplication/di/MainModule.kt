@@ -6,8 +6,10 @@ import com.isspass.data.network.ApiService
 import com.isspass.data.network.NumbersApiService
 import com.isspass.data.network.numbers.NumbersDataNetworkRepository
 import com.isspass.data.network.numbers.NumbersDataNetworkRepositoryImpl
-import com.isspass.domain.location.GetIssPredLocationUseCase
-import com.isspass.domain.location.GetIssPredLocationUseCaseImpl
+import com.isspass.domain.usecase.location.GetIssPredLocationUseCase
+import com.isspass.domain.usecase.location.GetIssPredLocationUseCaseImpl
+import com.isspass.domain.usecase.number.GetFactForNumberUseCase
+import com.isspass.domain.usecase.number.GetFactForNumberUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,14 +21,19 @@ class MainModule {
 
     @Provides
     fun provideGetIssPredLocationUseCase(
-        getIssPredLocationNetworkRepository: GetIssPredLocationNetworkRepository,
+        getIssPredLocationNetworkRepository: GetIssPredLocationNetworkRepository
+    ): GetIssPredLocationUseCase = GetIssPredLocationUseCaseImpl(getIssPredLocationNetworkRepository)
+
+    @Provides
+    fun provideGetFactForNumberUseCase(
         numbersDataNetworkRepository: NumbersDataNetworkRepository
-    ): GetIssPredLocationUseCase = GetIssPredLocationUseCaseImpl(getIssPredLocationNetworkRepository, numbersDataNetworkRepository)
+    ): GetFactForNumberUseCase = GetFactForNumberUseCaseImpl(numbersDataNetworkRepository)
 
     @Provides
     fun provideGetIssPredLocationNetworkRepository(apiService: ApiService): GetIssPredLocationNetworkRepository = GetIssPredLocationNetworkRepositoryImpl(apiService)
 
     @Provides
     fun provideNumbersDataNetworkRepository(apiService: NumbersApiService): NumbersDataNetworkRepository = NumbersDataNetworkRepositoryImpl(apiService)
+
 
 }

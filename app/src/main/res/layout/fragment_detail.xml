@@ -25,7 +25,7 @@
         android:id="@+id/tvRemainingTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="70sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         tools:text="5810"
         android:gravity="end"

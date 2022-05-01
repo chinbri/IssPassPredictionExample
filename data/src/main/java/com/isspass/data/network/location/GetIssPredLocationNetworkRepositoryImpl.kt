@@ -3,6 +3,7 @@ package com.isspass.data.network.location
 import com.isspass.data.model.ApiResponseModel
 import com.isspass.data.model.IssLocationResponseModel
 import com.isspass.data.network.ApiService
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(private val apiService: ApiService):
@@ -14,7 +15,7 @@ class GetIssPredLocationNetworkRepositoryImpl @Inject constructor(private val ap
         latitude: Long,
         longitude: Long,
         altitude: Long
-    ): ApiResponseModel<IssLocationResponseModel> {
+    ): ApiResponseModel<IssLocationResponseModel> = with(Dispatchers.IO){
 
         val response: IssLocationResponseModel
         try {

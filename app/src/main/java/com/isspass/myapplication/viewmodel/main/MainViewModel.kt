@@ -1,18 +1,17 @@
-package com.isspass.myapplication.viewmodel
+package com.isspass.myapplication.viewmodel.main
 
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isspass.domain.location.GetIssPredLocationParam
-import com.isspass.domain.location.GetIssPredLocationUseCase
+import com.isspass.domain.usecase.location.GetIssPredLocationParam
+import com.isspass.domain.usecase.location.GetIssPredLocationUseCase
 import com.isspass.domain.model.UseCaseResponse
 import com.isspass.domain.model.iss.IssPredictedDataEntity
 import com.isspass.myapplication.ui.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel

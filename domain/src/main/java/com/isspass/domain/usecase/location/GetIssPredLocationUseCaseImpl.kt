@@ -1,4 +1,4 @@
-package com.isspass.domain.location
+package com.isspass.domain.usecase.location
 
 import com.isspass.data.network.location.GetIssPredLocationNetworkRepository
 import com.isspass.data.model.ApiResponseModel
@@ -10,8 +10,7 @@ import com.isspass.domain.model.iss.IssPredictedDataEntity
 import javax.inject.Inject
 
 class GetIssPredLocationUseCaseImpl @Inject constructor(
-    private val getIssPredLocationNetworkRepository: GetIssPredLocationNetworkRepository,
-    private val numbersDataNetworkRepository: NumbersDataNetworkRepository
+    private val getIssPredLocationNetworkRepository: GetIssPredLocationNetworkRepository
     ): GetIssPredLocationUseCase {
 
     override suspend fun invoke(request: GetIssPredLocationParam): UseCaseResponse<IssPredictedDataEntity> {
@@ -31,12 +30,9 @@ class GetIssPredLocationUseCaseImpl @Inject constructor(
                 val issPredictedDataEntity = IssPredictedDataEntity(
                     successResponse.response?.map { issLocationItemModel ->
 
-                        val numberFact = getFactForNumber(issLocationItemModel.duration)
-
                         IssLocationItemEntity(
                             issLocationItemModel.duration,
-                            issLocationItemModel.risetime,
-                            numberFact
+                            issLocationItemModel.risetime
                         )
 
                     } ?: emptyList()
@@ -51,24 +47,6 @@ class GetIssPredLocationUseCaseImpl @Inject constructor(
                 println(result.t.message)
                 return UseCaseResponse.Error(result.message ?: "Error")
             }
-        }
-
-    }
-
-    private suspend fun getFactForNumber(duration: Long): String {
-
-        return when(val numberFactResult: ApiResponseModel<String> = numbersDataNetworkRepository.getFactForNumber(duration.toInt())){
-
-            is ApiResponseModel.ExceptionErrorResponse -> {
-                println(numberFactResult.t)
-                ""
-            }
-
-            is ApiResponseModel.SuccessResponse<String> ->
-                numberFactResult.value
-
-            else -> ""
-
         }
 
     }
